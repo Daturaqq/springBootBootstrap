@@ -1,6 +1,5 @@
 package com.springBoot.security;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -18,8 +17,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final UserDetailsService userDetailsService;
-    private final LoginSuccessHandler loginSuccessHandler;
+    private UserDetailsService userDetailsService;
+    private LoginSuccessHandler loginSuccessHandler;
 
     public SecurityConfig(@Qualifier("userServiceImp") UserDetailsService userDetailsService, LoginSuccessHandler loginSuccessHandler) {
         this.userDetailsService = userDetailsService;
@@ -46,7 +45,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login?logout")
                 .and().csrf().disable();
-
         http
                 .authorizeRequests()
                 .antMatchers("/login").anonymous()

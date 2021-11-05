@@ -1,6 +1,5 @@
 package com.springBoot.model;
 
-
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
@@ -8,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 
 @Entity
 @Table(name = "role")
@@ -43,7 +41,13 @@ public class Role implements GrantedAuthority {
     }
 
     @Override
-    public String toString(){
-        return role;
+    public String toString() {
+        if (role.equals("ROLE_ADMIN")) {
+            return "ADMIN";
+        }
+        if (role.equals("ROLE_USER")) {
+            return "USER";
+        }
+        return null;
     }
 }

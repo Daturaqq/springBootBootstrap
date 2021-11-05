@@ -20,25 +20,6 @@ public class UserController {
     @GetMapping
     public String userPage(Model model, Authentication authentication) {
         model.addAttribute("user", service.getUserByUsername(authentication.getName()));
-        return "userPageForUser";
-    }
-
-    @GetMapping("/edit/{id}")
-    public String editUser(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("editUser", service.getUser(id));
-        return "editUserForUser";
-    }
-
-    @PatchMapping("/saveEdit/{id}")
-    public String updateUser(@ModelAttribute("editUser") User editUser,
-                             @PathVariable("id") Long id) {
-        service.edit(editUser, id);
-        return "redirect:/login?logout";
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") Long id) {
-        service.delete(id);
-        return "redirect:/login?logout";
+        return "userPage";
     }
 }

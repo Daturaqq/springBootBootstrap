@@ -5,9 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.springBoot.service.UserService;
 
 @Controller
-public class MainPageController {
-
-    public MainPageController(UserService service) {
+public class LoginInController {
+    public LoginInController(UserService service) {
         service.createAdmin();
     }
 

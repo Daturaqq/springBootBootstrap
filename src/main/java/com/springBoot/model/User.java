@@ -1,6 +1,5 @@
 package com.springBoot.model;
 
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -18,10 +17,11 @@ public class User implements UserDetails {
     private Long id;
     private String firstname;
     private String lastname;
+    private Integer age;
     private String email; // используется в качестве username (логина)
     private String password;
 
-    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -31,9 +31,10 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String firstname, String lastname, String email, String password, Set<Role> roles) {
+    public User(String firstname, String lastname, Integer age, String email, String password, Set<Role> roles) {
         this.firstname = firstname;
         this.lastname = lastname;
+        this.age = age;
         this.email = email;
         this.password = password;
         this.roles = roles;
@@ -75,19 +76,30 @@ public class User implements UserDetails {
         return roles;
     }
 
-    public String getStringRoles() {
-        return roles.toString();
-    }
-
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String getStringRoles() {
+        StringBuilder roles = new StringBuilder();
+        for (Role role : getRoles()) {
+            roles.append(role.toString()).append(" ");
+        }
+        return roles.toString();
     }
 
     @Override
     public String toString() {
         return "id:" + id + " name:" + firstname + " " + lastname + " email:" + email;
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

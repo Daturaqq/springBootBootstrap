@@ -8,7 +8,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -33,22 +36,36 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     @Override
     @Transactional
-    public void add(User user) {
+    public void add(User user, String[] roles) {
+        user.setRoles(getRoleFromString(roles));
         DAO.add(user);
     }
 
     @Override
     @Transactional
-    public void edit(User editUser, long id) {
+    public void edit(User editUser, long id, String[] roles) {
         User user = DAO.getUser(id);
         user.setFirstname(editUser.getFirstname());
         user.setLastname(editUser.getLastname());
+        user.setAge(editUser.getAge());
         user.setEmail(editUser.getEmail());
         user.setPassword(editUser.getPassword());
-        if (!editUser.getRoles().isEmpty()) {
-            user.setRoles(editUser.getRoles());
-        }
+        user.setRoles(getRoleFromString(roles));
         DAO.edit(user);
+    }
+
+    private Set<Role> getRoleFromString(String[] roles) {
+        Set<Role> roleSet = new HashSet<Role>();
+        Role admin = new Role("ROLE_ADMIN");
+        Role user = new Role(("ROLE_USER"));
+        for (String role : roles) {
+            if (role.equals("ADMIN") && !roleSet.contains(admin)) {
+                roleSet.add(admin);
+            } else if (role.equals("USER") && !roleSet.contains(user)) {
+                roleSet.add(new Role("ROLE_USER"));
+            }
+        }
+        return roleSet;
     }
 
     @Override
@@ -81,4 +98,18 @@ public class UserServiceImp implements UserService, UserDetailsService {
         DAO.createAdmin();
     }
 
+    @Override
+    @Transactional
+    public List<Role> getRoleList() {
+        List<Role> roleList = new ArrayList<Role>() {
+            {
+                add(new Role("ROLE_USER"));
+            }
+
+            {
+                add(new Role("ROLE_ADMIN"));
+            }
+        };
+        return roleList;
+    }
 }

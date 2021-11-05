@@ -1,16 +1,26 @@
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>LoginInPage</title>
+  <title>LoginIn page</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="shortcut icon" href="favicon.ico" />
 </head>
 <body>
-<div class="form-block">
-  <form method="post" action="/login">
-    <div><input type="text" name="j_username" id="username" placeholder="Login"/></div>
-    <div><input type="password" name="j_password" id="password" placeholder="Password"/></div>
-    <div><input type="submit" value="Submit"/></div>
-  </form>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4"></div>
+    <form class="col-md-3" method="post" action="/login">
+      <br><br>
+      <h1 class="font-weight-bold h3 mb-3 text-left">Please sign in</h1>
+      <label for="inputEmail"  class="sr-only">Email address</label>
+      <input type="email" name="j_username" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+      <label for="inputPassword"  class="sr-only">Password</label>
+      <input type="password" name="j_password" id="inputPassword" class="form-control" placeholder="Password" required>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+  </div>
 </div>
 </body>
 </html>

@@ -7,11 +7,20 @@ import java.util.List;
 
 public interface UserService {
     List<User> getAllUsers();
+
     User getUser(Long id);
-    void add(User user);
-    void edit(User editUser, long id);
+
+    void add(User user, String[] role);
+
+    void edit(User editUser, long id, String[] roles);
+
     void delete(Long id);
+
     Role getRole(String roleName);
-    User getUserByUsername (String username);
+
+    User getUserByUsername(String username);
+
     void createAdmin();
+
+    List<Role> getRoleList();
 }

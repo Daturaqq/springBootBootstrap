@@ -19,50 +19,41 @@ public class AdminController {
     }
 
     @GetMapping
-    public String mainPage(Model model) {
-        List<User> userList = service.getAllUsers();
-        model.addAttribute("users", userList);
-        return "mainPage";
+    public String mainPage(Model model, Authentication authentication) {
+        model.addAttribute("user", service.getUserByUsername(authentication.getName()));
+        model.addAttribute("users", service.getAllUsers());
+        model.addAttribute("newUser", new User());
+        model.addAttribute("roles", service.getRoleList());
+        return "adminPage";
     }
 
-    @GetMapping("/userPage/{id}")
-    public String userPage(@PathVariable("id") Long id,Model model) {
+    @GetMapping("/{id}")
+    public String userPage(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", service.getUser(id));
         return "userPage";
     }
 
-    @GetMapping("/new")
-    public String createUser(Model model) {
-        model.addAttribute("user", new User());
-        return "createUser";
-    }
-
-    @PostMapping("/save")
-    public String saveUser(@ModelAttribute("user") User user) {
-        service.add(user);
+    @PostMapping("/")
+    public String saveUser(@ModelAttribute("newUser") User user, @RequestParam(value = "roles") String[] roles) {
+        service.add(user, roles);
         return "redirect:/admin";
     }
 
-    @GetMapping("/edit/{id}")
-    public String editUser(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("editUser", service.getUser(id));
-        return "editUser";
-    }
-
-    @PatchMapping("/saveEdit/{id}")
-    public String updateUser(@ModelAttribute("editUser") User editUser,
+    @PatchMapping("/{id}")
+    public String updateUser(@ModelAttribute("user") User editUser,
                              @PathVariable("id") Long id,
+                             @RequestParam(value = "roles") String[] role,
                              Authentication authentication) {
         long authenticationUserId = service.getUserByUsername(authentication.getName()).getId();
-        service.edit(editUser, id);
+        service.edit(editUser, id, role);
         if (id == authenticationUserId) {
             return "redirect:/login?logout";
         }
         return "redirect:/admin";
     }
 
-    @DeleteMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") Long id,
+    @DeleteMapping("/{id}")
+    public String deleteUser(@PathVariable(value = "id") Long id,
                              Authentication authentication) {
         long authenticationUserId = service.getUserByUsername(authentication.getName()).getId();
         service.delete(id);

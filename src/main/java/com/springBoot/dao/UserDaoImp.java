@@ -1,7 +1,5 @@
 package com.springBoot.dao;
 
-
-import com.springBoot.controller.AdminController;
 import com.springBoot.model.Role;
 import com.springBoot.model.User;
 import org.springframework.stereotype.Repository;
@@ -63,19 +61,23 @@ public class UserDaoImp implements UserDao {
             add(new User(
                     "ADMIN",
                     "ADMIN",
-                    "ADMIN",
+                    22,
+                    "ADMIN@ADMIN.com",
                     "ADMIN",
                     new HashSet<Role>() {{
                         add(new Role("ROLE_ADMIN"));
-                    }}));
+                    }})
+            );
             add(new User(
                     "Vasya",
                     "Petrov",
+                    31,
                     "Petrov@mail.ru",
                     "1234",
                     new HashSet<Role>() {{
                         add(new Role("ROLE_USER"));
-                    }}));
+                    }})
+            );
         }
     }
 }
